@@ -1,0 +1,102 @@
+<html>
+  <head>
+    <title>Movable Ink Demo Page</title>
+
+    <script src="/static/javascripts/jquery-1.6.js"></script>
+    <script src="/static/javascripts/polymaps.js"></script>
+    <script src="/static/javascripts/polymaps-extras.js"></script>
+    <script src="/static/javascripts/location_map.js"></script>
+
+    <link href="/static/stylesheets/map.css" rel="stylesheet">
+    <link href="/static/stylesheets/geo.css" rel="stylesheet">
+
+    <style>
+      body {
+        background: url(/static/images/bg.png);
+        width: 600px;
+        margin: auto;
+        font-family: Helvetica, Arial, sans-serif;
+      }
+
+      h1 {
+        border-bottom: 1px solid #333;
+        margin-bottom: 1em;
+        margin-top: 0.5em;
+      }
+
+      a {
+        color: #006699;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Movable Ink Demo App</h1>
+    <p>Crop the area below:</p>
+
+    <div style="width: 407px; padding: 10px; background-color: #FFF; margin: auto;">
+
+      <!-- Interesting stuff begins here -->
+
+      <!-- Movable Ink will override the web crop's dimensions and offsets with those of -->
+      <!-- a div with id 'mi_size_container', if present. -->
+      <div id="mi_size_container">
+
+        <div id="map_container">
+          <div id="poly_container">
+            <img id="map" src="/static/images/map_overlay.png">
+          </div>
+        </div>
+
+        <div id="text">
+          {% if name %}
+            Hello,
+            <span class="var">{{ name }}</span>.
+          {% endif %}
+
+          You loaded this image
+          on a
+          <span class="var">{{ device|default('[device]', true) }}</span>
+          near
+          <span class="var">{{ location|default('[location]', true) }}</span>
+          on
+          <span class="var">{{ time_string }}</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Movable Ink will override the web crop's redirect link with the href of -->
+    <!-- a link with id 'mi_dynamic_link', if present.  It can live anywhere on the page. -->
+    <a id="mi_dynamic_link" href="http://google.com/search?q=<%= CGI::escape @location %>"></a>
+
+    <!-- Just setting up the map -->
+    <script>
+      //<![CDATA[
+        var pointData = [[{{ latitude }}, {{ longitude }}, "hello!"]];
+
+        addMap(pointData);
+      //]]>
+    </script>
+
+    <!-- Interesting stuff ends here -->
+
+    <p id="params_message">If there is no data above, it is because all of the contextual information will be passed to this page as query parameters when you create the web crop.  But for now, try adding some <a href="/?mi_tz=America/New_York&mi_lat=38.90&mi_lon=-77.03&mi_city=Washington&mi_reg=DC&mi_cc=US&mi_type=desktop&name=Michael">default parameters</a> to this page's URL.</p>
+
+    <script>
+      if(document.location.search) {
+        document.getElementById("params_message").style.display = "none";
+      }
+    </script>
+
+    <p style="margin-top: 5em; border-top: 1px solid #333; padding-top: 1em;">
+      For more about our features, check us out at <a href="http://movableink.com">http://movableink.com</a>.
+    </p>
+    <p style="font-size: 0.8em;">
+      &copy 2012 Movable, Inc.  This demo application is licensed under the <a href="https://github.com/movableink/ruby-demo/blob/master/LICENSE.md">MIT License</a>.
+    </p>
+
+    <a href="https://github.com/movableink/ruby-demo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
+  </body>
+</html>
